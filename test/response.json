@@ -1,0 +1,19 @@
+{
+  "id": "cmpl-6jktoRl8wAzmlc0GlWMt6JhQnSHKc",
+  "object": "text_completion",
+  "created": 1676363060,
+  "model": "davinci",
+  "choices": [
+    {
+      "text": "\nIm fine.nnIm sorry to bother you.\n\nIm sorry to bother you.nnIm sorry to bother you.\n\nIm sorry to bother you.nnIm sorry to bother you.\n\nIm sorry to bother you.nnIm sorry to bother you.\n\nIm sorry to bother you.nnIm sorry to bother you.\n\nIm sorry to bother you.nnIm sorry",
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "length"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 7,
+    "completion_tokens": 100,
+    "total_tokens": 107
+  }
+}
