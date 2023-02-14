@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"io"
 	"os"
 )
@@ -83,7 +82,7 @@ func (c *ai_client) completion_query() error {
 		panic(err)
 	}
 	input := string(buff)
-	fmt.Printf("input=%s\n", input)
+	// fmt.Printf("%s\n", input)
 	prompt := &query{
 		Model:     args.model,
 		Prompt:    input,

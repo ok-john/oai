@@ -31,7 +31,7 @@ type (
 func (args *cmd_args) parse() ai_client {
 	flag.StringVar(&args.environment, "env", default_environment, "absolute path to the environment directory.")
 	flag.StringVar(&args.org_id, "org", "", "optionally specify an organization id.")
-	flag.BoolVar(&args.tor, "tor", true, "toggles the use of a socks5 tor proxy.")
+	flag.BoolVar(&args.tor, "tor", false, "toggles the use of a socks5 tor proxy.")
 	flag.StringVar(&args.socks5_hostname, "socks5-hostname", "localhost:9050", "optionally override the default tor proxy address.")
 	flag.StringVar(&args.output_file, "o", "", "optionally specify an output file, defaults to stdout.")
 	flag.StringVar(&args.model, "model", "text-davinci-003", "model to use")
@@ -65,7 +65,7 @@ func (args *cmd_args) parse() ai_client {
 		panic(err)
 	}
 	c := default_client(args.tor, args.api_key, out_file)
-	c.check_ip()
+	go c.check_ip()
 	c.api_key = string(_api_key)
 	args.api_key = strings.ReplaceAll(string(_api_key), "\n", "")
 	return c

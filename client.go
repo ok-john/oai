@@ -96,6 +96,6 @@ func (gc *ai_client) check_ip() {
 	if err != nil {
 		log.Fatal("Error making GET request.", err)
 	}
-	defer resp.Body.Close()
-	io.Copy(os.Stdout, resp.Body)
+	resp.Body.Close()
+	// io.Copy(os.Stdout, resp.Body)
 }
