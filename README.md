@@ -1,6 +1,6 @@
 ## oai
 
-An openai cli written in go, supports proxying traffic over tor. 
+An [openai](https://openai.com/) cli written in go, supports proxying traffic over tor. 
 
 
 ## install
