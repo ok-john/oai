@@ -23,6 +23,7 @@ type (
 		output_file     string
 		api_key         string
 		model           string
+		list_models     bool
 		max_tokens      int
 		temperature     float64
 	}
@@ -32,11 +33,12 @@ func (args *cmd_args) parse() ai_client {
 	flag.StringVar(&args.environment, "env", default_environment, "absolute path to the environment directory.")
 	flag.StringVar(&args.org_id, "org", "", "optionally specify an organization id.")
 	flag.BoolVar(&args.tor, "tor", false, "toggles the use of a socks5 tor proxy.")
+	flag.BoolVar(&args.list_models, "l", false, "list available openai models.")
 	flag.StringVar(&args.socks5_hostname, "socks5-hostname", "localhost:9050", "optionally override the default tor proxy address.")
 	flag.StringVar(&args.output_file, "o", "", "optionally specify an output file, defaults to stdout.")
 	flag.StringVar(&args.model, "model", "text-davinci-003", "model to use")
-	flag.Float64Var(&args.temperature, "temp", 0.5, "model to use")
-	flag.IntVar(&args.max_tokens, "max", 2000, "model to use")
+	flag.Float64Var(&args.temperature, "temp", 0.5, "temperature of model")
+	flag.IntVar(&args.max_tokens, "max", 2000, "max tokens")
 	flag.Parse()
 	if stat, err := os.Stat(args.environment); errors.Is(err, os.ErrNotExist) {
 		fmt.Println("environment directory is non-existent.")
@@ -64,8 +66,8 @@ func (args *cmd_args) parse() ai_client {
 		fmt.Printf("bad: no api key at %s", path.Join(args.environment, api_key_filename))
 		panic(err)
 	}
-	c := default_client(args.tor, args.api_key, out_file)
-	go c.check_ip()
+	c := default_client(args, args.tor, args.api_key, out_file)
+	// go c.check_ip()
 	c.api_key = string(_api_key)
 	args.api_key = strings.ReplaceAll(string(_api_key), "\n", "")
 	return c

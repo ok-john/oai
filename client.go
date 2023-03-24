@@ -29,6 +29,7 @@ type (
 		use_tor         bool
 		client          *http.Client
 		output_file     *os.File
+		args            *cmd_args
 	}
 	proxy func(*http.Request) (*url.URL, error)
 )
@@ -42,11 +43,12 @@ func (c *ai_client) available_models() (int64, error) {
 	return io.Copy(c.output_file, resp.Body)
 }
 
-func default_client(use_tor bool, api_key string, output *os.File) ai_client {
+func default_client(args *cmd_args, use_tor bool, api_key string, output *os.File) ai_client {
 	c := ai_client{
 		api_key:     api_key,
 		client:      http.DefaultClient,
 		output_file: output,
+		args:        args,
 	}
 	if use_tor {
 		c.client = tor_proxy()
