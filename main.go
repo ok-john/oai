@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io"
 	"os"
 )
@@ -72,6 +73,14 @@ func main() {
 		flag.Usage()
 		os.Exit(0)
 	}
+
+	if client.args.list_models {
+		if _, err := client.available_models(); err != nil {
+			panic(err)
+		}
+		os.Exit(0)
+	}
+
 	client.completion_query()
 }
 
@@ -82,7 +91,8 @@ func (c *ai_client) completion_query() error {
 		panic(err)
 	}
 	input := string(buff)
-	// fmt.Printf("%s\n", input)
+
+	fmt.Printf("input: %s\n", input)
 	prompt := &query{
 		Model:     args.model,
 		Prompt:    input,
