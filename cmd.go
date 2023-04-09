@@ -17,6 +17,8 @@ var (
 type (
 	cmd_args struct {
 		environment     string
+		interactive     bool
+		debug           bool
 		tor             bool
 		socks5_hostname string
 		org_id          string
@@ -34,6 +36,8 @@ func (args *cmd_args) parse() ai_client {
 	flag.StringVar(&args.org_id, "org", "", "optionally specify an organization id.")
 	flag.BoolVar(&args.tor, "tor", false, "toggles the use of a socks5 tor proxy.")
 	flag.BoolVar(&args.list_models, "l", false, "list available openai models.")
+	flag.BoolVar(&args.interactive, "i", false, "run in interactive chat mode.")
+	flag.BoolVar(&args.debug, "debug", false, "debug mode.")
 	flag.StringVar(&args.socks5_hostname, "socks5-hostname", "localhost:9050", "optionally override the default tor proxy address.")
 	flag.StringVar(&args.output_file, "o", "", "optionally specify an output file, defaults to stdout.")
 	flag.StringVar(&args.model, "model", "gpt-4", "model to use")
