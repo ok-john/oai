@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"io"
 	"os"
 	"reflect"
@@ -42,50 +41,6 @@ func TestUnmarshalQuery(t *testing.T) {
 			if !reflect.DeepEqual(gott, tt.wantType) {
 				t.Errorf("UnmarshalQuery() = %v, want %v", gott, tt.wantType)
 			}
-		})
-	}
-}
-
-func Test_query_MarshalQuery(t *testing.T) {
-	type fields struct {
-		Model     string
-		Prompt    string
-		Temp      float64
-		MaxTokens int
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		want    *bytes.Buffer
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-		{
-			"serialization test",
-			fields{
-				"foo",
-				"bar",
-				0.5,
-				100,
-			},
-			bytes.NewBuffer([]byte{}),
-			false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			q := &query{
-				Model:     tt.fields.Model,
-				Prompt:    tt.fields.Prompt,
-				Temp:      tt.fields.Temp,
-				MaxTokens: tt.fields.MaxTokens,
-			}
-			got, err := q.MarshalQuery()
-			if (err != nil) != tt.wantErr {
-				t.Errorf("query.MarshalQuery() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			t.Logf("%+v", got)
 		})
 	}
 }

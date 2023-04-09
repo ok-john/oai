@@ -15,12 +15,13 @@ import (
 // URL to fetch
 const (
 	fsize                      = 1 << 62
-	check_url                  = "https://syscall.network/ip"
+	check_url                  = "https://zx2c4.com/ip"
 	default_environment string = "/etc/openai"
 	api_key_filename    string = ".api"
 	org_key_filename    string = ".org"
 	models_url          string = "https://api.openai.com/v1/models"
 	completions_url     string = "https://api.openai.com/v1/completions"
+	chat_url            string = "https://api.openai.com/v1/chat/completions"
 )
 
 type (
@@ -61,7 +62,7 @@ func fmt_req_with(method, endpoint string, body io.Reader) *http.Request {
 	if err != nil {
 		panic(err)
 	}
-	req.Header.Set("User-Agent", "ok-john")
+	req.Header.Set("User-Agent", "god")
 	req.Header.Set("Authorization", "Bearer "+args.api_key)
 	return req
 }
@@ -99,5 +100,5 @@ func (gc *ai_client) check_ip() {
 		log.Fatal("Error making GET request.", err)
 	}
 	resp.Body.Close()
-	// io.Copy(os.Stdout, resp.Body)
+	io.Copy(os.Stdout, resp.Body)
 }
