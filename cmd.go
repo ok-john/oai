@@ -20,6 +20,7 @@ type (
 		interactive     bool
 		debug           bool
 		tor             bool
+		latest_logs     bool
 		socks5_hostname string
 		org_id          string
 		output_file     string
@@ -35,6 +36,7 @@ func (args *cmd_args) parse() ai_client {
 	flag.StringVar(&args.environment, "env", default_environment, "absolute path to the environment directory.")
 	flag.StringVar(&args.org_id, "org", "", "optionally specify an organization id.")
 	flag.BoolVar(&args.tor, "tor", false, "toggles the use of a socks5 tor proxy.")
+	flag.BoolVar(&args.latest_logs, "last", false, "print the latest log file?")
 	flag.BoolVar(&args.list_models, "l", false, "list available openai models.")
 	flag.BoolVar(&args.interactive, "i", false, "run in interactive chat mode.")
 	flag.BoolVar(&args.debug, "debug", false, "debug mode.")
