@@ -64,6 +64,7 @@ func fmt_req_with(method, endpoint string, body io.Reader) *http.Request {
 	}
 	req.Header.Set("User-Agent", "god")
 	req.Header.Set("Authorization", "Bearer "+args.api_key)
+	req.Header.Set("Content-Type", "application/json")
 	return req
 }
 
