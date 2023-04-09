@@ -17,12 +17,12 @@ type (
 		MaxTokens int     `json:"max_tokens"`
 	}
 
-	// choice struct {
-	// 	Text         string      `json:"text"`
-	// 	Index        int         `json:"index"`
-	// 	LogProbs     interface{} `json:"logprobs"`
-	// 	FinishReason string      `json:"finish_reason"`
-	// }
+	completion_choice struct {
+		Text         string      `json:"text"`
+		Index        int         `json:"index"`
+		LogProbs     interface{} `json:"logprobs"`
+		FinishReason string      `json:"finish_reason"`
+	}
 
 	choice struct {
 		Message chat   `json:"message"`
