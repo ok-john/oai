@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"io"
 	"os"
 )
@@ -13,16 +12,22 @@ type (
 	// default_model =
 	query struct {
 		Model     string  `json:"model"`
-		Prompt    string  `json:"prompt"`
+		Prompt    []chat  `json:"messages"`
 		Temp      float64 `json:"temperature"`
 		MaxTokens int     `json:"max_tokens"`
 	}
 
-	choice struct {
+	completion_choice struct {
 		Text         string      `json:"text"`
 		Index        int         `json:"index"`
 		LogProbs     interface{} `json:"logprobs"`
 		FinishReason string      `json:"finish_reason"`
+	}
+
+	choice struct {
+		Message chat   `json:"message"`
+		Finish  string `json:"finish_reason"`
+		Index   uint64 `json:"index"`
 	}
 
 	usage struct {
@@ -39,7 +44,27 @@ type (
 		Choices []choice `json:"choices"`
 		Usage   usage    `json:"usage"`
 	}
+
+	chat struct {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	}
 )
+
+func NewChat(role, content string) chat {
+	return chat{
+		Role:    role,
+		Content: content,
+	}
+}
+
+func (c *chat) MarshalChat() (io.Reader, error) {
+	buf, err := json.Marshal(c)
+	if err != nil {
+		return nil, err
+	}
+	return bytes.NewBuffer(buf), nil
+}
 
 func UnmarshalResponse(f io.ReadCloser) (response, error) {
 	ret := response{}
@@ -92,10 +117,11 @@ func (c *ai_client) completion_query() error {
 	}
 	input := string(buff)
 
-	fmt.Printf("input: %s\n", input)
+	chatts := NewChat("system", input)
+
 	prompt := &query{
 		Model:     args.model,
-		Prompt:    input,
+		Prompt:    []chat{chatts},
 		Temp:      args.temperature,
 		MaxTokens: args.max_tokens,
 	}
@@ -103,7 +129,8 @@ func (c *ai_client) completion_query() error {
 	if err != nil {
 		panic(err)
 	}
-	req := fmt_req_with("POST", completions_url, body)
+
+	req := fmt_req_with("POST", chat_url, body)
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -116,7 +143,7 @@ func (c *ai_client) completion_query() error {
 	}
 
 	for _, choice := range result.Choices {
-		if _, err := c.output_file.WriteString(choice.Text); err != nil {
+		if _, err := c.output_file.WriteString(choice.Message.Content); err != nil {
 			return err
 		}
 	}

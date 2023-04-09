@@ -36,7 +36,7 @@ func (args *cmd_args) parse() ai_client {
 	flag.BoolVar(&args.list_models, "l", false, "list available openai models.")
 	flag.StringVar(&args.socks5_hostname, "socks5-hostname", "localhost:9050", "optionally override the default tor proxy address.")
 	flag.StringVar(&args.output_file, "o", "", "optionally specify an output file, defaults to stdout.")
-	flag.StringVar(&args.model, "model", "text-davinci-003", "model to use")
+	flag.StringVar(&args.model, "model", "gpt-4", "model to use")
 	flag.Float64Var(&args.temperature, "temp", 0.5, "temperature of model")
 	flag.IntVar(&args.max_tokens, "max", 2000, "max tokens")
 	flag.Parse()
