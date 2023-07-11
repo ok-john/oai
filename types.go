@@ -181,6 +181,5 @@ func SetupLogger(log_dir string) *log.Logger {
 	if err != nil {
 		panic(err)
 	}
-	os.Stdout.WriteString("\nLOGGER CREATAED AT: " + log_fn + "\n")
 	return log.New(log_fil, "", 0)
 }

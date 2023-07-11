@@ -13,9 +13,9 @@ readonly __BIN_NAME=${3:-"oai"}
 readonly __EXEC_DIR=$(dirname "$(realpath $0)") && cd $__EXEC_DIR   
 
 __darwin=( arm64 amd64 )
-__linux=( amd64 arm arm64 mips mips64 mips64le mipsle ppc64 ppc64le riscv64 s390x 386 )
-__freebsd=( amd64 arm arm64 386 )
-__windows=( amd64 arm arm64 386 ) 
+__linux=( amd64 arm64 mips mips64 mips64le mipsle ppc64 ppc64le riscv64 s390x 386 )
+__freebsd=( amd64 arm64 386 )
+__windows=( amd64 arm64 386 ) 
 
 function build
 {   

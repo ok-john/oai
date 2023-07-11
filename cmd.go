@@ -18,6 +18,7 @@ type (
 	cmd_args struct {
 		environment     string
 		interactive     bool
+		image           bool
 		debug           bool
 		tor             bool
 		latest_logs     bool
@@ -39,12 +40,13 @@ func (args *cmd_args) parse() ai_client {
 	flag.BoolVar(&args.latest_logs, "last", false, "print the latest log file?")
 	flag.BoolVar(&args.list_models, "l", false, "list available openai models.")
 	flag.BoolVar(&args.interactive, "i", false, "run in interactive chat mode.")
+	flag.BoolVar(&args.image, "img", false, "generate an image with DALL-E and write the output to -o or stdout.")
 	flag.BoolVar(&args.debug, "debug", false, "debug mode.")
 	flag.StringVar(&args.socks5_hostname, "socks5-hostname", "localhost:9050", "optionally override the default tor proxy address.")
 	flag.StringVar(&args.output_file, "o", "", "optionally specify an output file, defaults to stdout.")
 	flag.StringVar(&args.model, "model", "gpt-4", "model to use")
 	flag.Float64Var(&args.temperature, "temp", 0.5, "temperature of model")
-	flag.IntVar(&args.max_tokens, "max", 2000, "max tokens")
+	flag.IntVar(&args.max_tokens, "max", 8000, "max tokens")
 	flag.Parse()
 	if stat, err := os.Stat(args.environment); errors.Is(err, os.ErrNotExist) {
 		fmt.Println("environment directory is non-existent.")
@@ -61,7 +63,7 @@ func (args *cmd_args) parse() ai_client {
 	var out_file *os.File = os.Stdout
 	var ps_errno error = nil
 	if len(args.output_file) > 0 {
-		out_file, ps_errno = os.Open(args.output_file)
+		out_file, ps_errno = os.Create(args.output_file)
 		if ps_errno != nil {
 			fmt.Printf("bad output file: %s", args.output_file)
 			panic(ps_errno)

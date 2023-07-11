@@ -74,8 +74,17 @@ func main() {
 	}
 
 	if client.args.interactive {
-		fmt.Println("Running in interactive mode...")
 		interactive(&client)
+		os.Exit(0)
+	}
+
+	if client.args.image {
+		buff, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			panic(err)
+		}
+		i := ofPrompt(string(buff))
+		client.send(&i)
 		os.Exit(0)
 	}
 
@@ -90,19 +99,15 @@ func interactive(client *ai_client) {
 		MaxTokens: client.args.max_tokens,
 	}
 	sc := bufio.NewScanner(os.Stdin)
-	line, prev_line := []byte{}, []byte{}
+	line := []byte{}
+	fmt.Printf("Mode: Interactive-Shell\nModel: %s\nPer-Request-Token-Limit: %d\nRate-Limit: ∞\n", client.args.model, client.args.max_tokens)
+
 	for sc.Scan() {
-		prev_line, line = line, sc.Bytes()
-		if client.args.debug {
-			fmt.Printf("previous_line: %s\n", prev_line)
-			fmt.Printf("current_line: %s\n", line)
-		}
+		line = sc.Bytes()
 		if len(line) == 0 {
 			continue
 		}
-		// state.Prompt = append(state.Prompt, NewChat("admin", string(line)))
-
-		logger.Printf("user: %s\n", line)
+		logger.Println(line)
 		state.add_chat(line)
 		state.send_chat(client)
 		if client.args.debug {
